@@ -1,0 +1,11 @@
+{
+  "name": "note-post-mcp",
+  "version": "1.0.7",
+  "mcp_servers": [
+    {
+      "name": "note-post-mcp",
+      "command": "node",
+      "args": ["/Users/motomu.tsuji/.gemini/extensions/note-post-mcp/build/index.js"]
+    }
+  ]
+}

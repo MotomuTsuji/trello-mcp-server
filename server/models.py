@@ -45,3 +45,26 @@ class TrelloCard(BaseModel):
     pos: float
     labels: List[TrelloLabel] = []
     due: str | None = None
+
+
+class TrelloCommentData(BaseModel):
+    """Model representing the data inside a Trello comment."""
+
+    text: str
+
+
+class TrelloMemberCreator(BaseModel):
+    """Model representing the creator of a Trello action/comment."""
+
+    id: str
+    fullName: str
+    username: str
+
+
+class TrelloComment(BaseModel):
+    """Model representing a Trello comment (action)."""
+
+    id: str
+    data: TrelloCommentData
+    date: str
+    memberCreator: TrelloMemberCreator
