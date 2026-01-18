@@ -17,16 +17,17 @@ class CardService:
         self.client = client
 
     async def get_card(self, card_id: str) -> TrelloCard:
-        """Retrieves a specific card by its ID.
+        """Retrieves a specific card by its ID, including its comments.
 
         Args:
             card_id (str): The ID of the card to retrieve.
 
         Returns:
-            TrelloCard: The card object containing card details.
+            TrelloCard: The card object containing card details and comments.
         """
         response = await self.client.GET(f"/cards/{card_id}")
-        return TrelloCard(**response)
+        comments = await self.get_card_comments(card_id)
+        return TrelloCard(**response, comments=comments)
 
     async def get_cards(self, list_id: str) -> List[TrelloCard]:
         """Retrieves all cards in a given list.

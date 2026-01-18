@@ -45,6 +45,7 @@ class TrelloCard(BaseModel):
     pos: float
     labels: List[TrelloLabel] = []
     due: str | None = None
+    comments: List['TrelloComment'] = []
 
 
 class TrelloCommentData(BaseModel):
