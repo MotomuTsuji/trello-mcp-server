@@ -130,27 +130,6 @@ async def delete_card(ctx: Context, card_id: str) -> dict:
         raise
 
 
-async def get_card_comments(ctx: Context, card_id: str) -> List[TrelloComment]:
-    """Retrieves all comments for a specific card.
-
-    Args:
-        card_id (str): The ID of the card to get comments for.
-
-    Returns:
-        List[TrelloComment]: A list of comment objects.
-    """
-    try:
-        logger.info(f"Getting comments for card: {card_id}")
-        result = await service.get_card_comments(card_id)
-        logger.info(f"Successfully retrieved {len(result)} comments for card: {card_id}")
-        return result
-    except Exception as e:
-        error_msg = f"Failed to get comments: {str(e)}"
-        logger.error(error_msg)
-        await ctx.error(error_msg)
-        raise
-
-
 async def add_comment_to_card(ctx: Context, card_id: str, text: str) -> TrelloComment:
     """Adds a new comment to a card.
 

@@ -2,6 +2,7 @@
 Service for managing Trello cards in MCP server.
 """
 
+import asyncio
 from typing import Any, Dict, List
 
 from server.models import TrelloCard, TrelloComment
@@ -30,7 +31,7 @@ class CardService:
         return TrelloCard(**response, comments=comments)
 
     async def get_cards(self, list_id: str) -> List[TrelloCard]:
-        """Retrieves all cards in a given list.
+        """Retrieves all cards in a given list, including their comments.
 
         Args:
             list_id (str): The ID of the list whose cards to retrieve.
@@ -39,7 +40,18 @@ class CardService:
             List[TrelloCard]: A list of card objects.
         """
         response = await self.client.GET(f"/lists/{list_id}/cards")
-        return [TrelloCard(**card) for card in response]
+        cards = [TrelloCard(**card) for card in response]
+
+        # Fetch comments for all cards concurrently
+        comments_list = await asyncio.gather(
+            *[self.get_card_comments(card.id) for card in cards]
+        )
+
+        # Attach comments to respective cards
+        for card, comments in zip(cards, comments_list):
+            card.comments = comments
+
+        return cards
 
     async def create_card(self, **kwargs) -> TrelloCard:
         """Creates a new card in a given list.
